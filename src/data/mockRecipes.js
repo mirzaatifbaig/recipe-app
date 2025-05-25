@@ -2,37 +2,37 @@ export const categories = [
   {
     id: "breakfast",
     name: "Breakfast",
-    imageUrl: "../src/data/images/photo-1533089860892-a7c6f0a88666.webp",
+    imageUrl: "../src/data/resized/photo-1533089860892-a7c6f0a88666.webp",
     color: "#F9A825",
   },
   {
     id: "lunch",
     name: "Lunch",
-    imageUrl: "../src/data/images/photo-1510629954389-c1e0da47d414.webp",
+    imageUrl: "../src/data/resized/photo-1510629954389-c1e0da47d414.webp",
     color: "#43A047",
   },
   {
     id: "dinner",
     name: "Dinner",
-    imageUrl: "../src/data/images/photo-1546069901-ba9599a7e63c.webp",
+    imageUrl: "../src/data/resized/photo-1546069901-ba9599a7e63c.webp",
     color: "#5E35B1",
   },
   {
     id: "dessert",
     name: "Dessert",
-    imageUrl: "../src/data/images/photo-1563729784474-d77dbb933a9e.webp",
+    imageUrl: "../src/data/resized/photo-1563729784474-d77dbb933a9e.webp",
     color: "#D81B60",
   },
   {
     id: "snack",
     name: "Snack",
-    imageUrl: "../src/data/images/photo-1619221882220-947b3d3c8861.webp",
+    imageUrl: "../src/data/resized/photo-1619221882220-947b3d3c8861.webp",
     color: "#00ACC1",
   },
   {
     id: "beverage",
     name: "Beverage",
-    imageUrl: "../src/data/images/photo-1544145945-f90425340c7e.webp",
+    imageUrl: "../src/data/resized/photo-1544145945-f90425340c7e.webp",
     color: "#FB8C00",
   },
 ];
@@ -43,7 +43,7 @@ export const mockRecipes = [
     title: "Avocado Toast with Poached Eggs",
     description:
       "A delicious and nutritious breakfast that's ready in minutes. Perfect for busy mornings!",
-    imageUrl: "../src/data/images/photo-1525351484163-7529414344d8.webp",
+    imageUrl: "../src/data/resized/photo-1525351484163-7529414344d8.webp",
     prepTime: 10,
     cookTime: 5,
     servings: 2,
@@ -135,7 +135,7 @@ export const mockRecipes = [
     title: "Spaghetti Carbonara",
     description:
       "Classic Italian pasta dish made with eggs, cheese, pancetta, and black pepper.",
-    imageUrl: "../src/data/images/photo-1612874742237-6526221588e3.webp",
+    imageUrl: "../src/data/resized/photo-1612874742237-6526221588e3.webp",
     prepTime: 10,
     cookTime: 15,
     servings: 4,
@@ -250,7 +250,7 @@ export const mockRecipes = [
     title: "Berry Smoothie Bowl",
     description:
       "Refreshing smoothie bowl topped with fresh fruits, granola, and honey.",
-    imageUrl: "../src/data/images/photo-1731532968087-49174aa95c4a.webp",
+    imageUrl: "../src/data/resized/photo-1731532968087-49174aa95c4a.webp",
     prepTime: 10,
     cookTime: 0,
     servings: 1,
@@ -357,7 +357,7 @@ export const mockRecipes = [
     title: "Homemade Chocolate Chip Cookies",
     description:
       "Soft and chewy chocolate chip cookies with a perfect golden edge.",
-    imageUrl: "../src/data/images/photo-1499636136210-6f4ee915583e.webp",
+    imageUrl: "../src/data/resized/photo-1499636136210-6f4ee915583e.webp",
     prepTime: 15,
     cookTime: 10,
     servings: 24,
@@ -499,7 +499,7 @@ export const mockRecipes = [
     title: "Fresh Greek Salad",
     description:
       "A refreshing salad with crisp vegetables, feta cheese, and tangy dressing.",
-    imageUrl: "../src/data/images/photo-1540420773420-3366772f4999.webp",
+    imageUrl: "../src/data/resized/photo-1540420773420-3366772f4999.webp",
     prepTime: 15,
     cookTime: 0,
     servings: 4,
