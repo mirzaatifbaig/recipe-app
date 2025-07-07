@@ -1,10 +1,61 @@
 import { useState } from "react";
 import { CookingStepItem } from "./CookingStepItem";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+  useSortable,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { motion } from "framer-motion";
 import { useSoundEffect } from "@/hooks/useSoundEffect";
 import { useConfetti } from "@/hooks/useConfetti";
 import ReactConfetti from "react-confetti";
+
+function SortableStep({
+  id,
+  recipeId,
+  step,
+  index,
+  isActive,
+  onToggleExpand,
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    zIndex: isDragging ? 50 : "auto",
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <CookingStepItem
+        recipeId={recipeId}
+        step={step}
+        index={index}
+        isActive={isActive}
+        onToggleExpand={onToggleExpand}
+      />
+    </div>
+  );
+}
 
 export function CookingStepsList({ recipeId, steps }) {
   const [activeStepId, setActiveStepId] = useState(null);
@@ -19,9 +70,15 @@ export function CookingStepsList({ recipeId, steps }) {
     numberOfPieces: 200,
   });
 
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
   const allStepsCompleted = localSteps.every((step) => step.completed);
 
-  // Check if all steps were just completed
   if (allStepsCompleted && !showConfetti && localSteps.length > 0) {
     startConfetti();
     play("success");
@@ -32,15 +89,17 @@ export function CookingStepsList({ recipeId, steps }) {
     play("click");
   };
 
-  const handleDragEnd = (result) => {
-    if (!result.destination) return;
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
 
-    const items = Array.from(localSteps);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
-
-    setLocalSteps(items);
-    play("click");
+    if (active.id !== over.id) {
+      setLocalSteps((items) => {
+        const oldIndex = items.findIndex((item) => item.id === active.id);
+        const newIndex = items.findIndex((item) => item.id === over.id);
+        return arrayMove(items, oldIndex, newIndex);
+      });
+      play("click");
+    }
   };
 
   return (
@@ -62,39 +121,30 @@ export function CookingStepsList({ recipeId, steps }) {
       )}
 
       <div className="space-y-3">
-        <DragDropContext onDragEnd={handleDragEnd}>
-          <Droppable droppableId="steps">
-            {(provided) => (
-              <div
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                className="space-y-3"
-              >
-                {localSteps.map((step, index) => (
-                  <Draggable key={step.id} draggableId={step.id} index={index}>
-                    {(provided, snapshot) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        className={`${snapshot.isDragging ? "z-50" : ""}`}
-                      >
-                        <CookingStepItem
-                          recipeId={recipeId}
-                          step={step}
-                          index={index}
-                          isActive={activeStepId === step.id}
-                          onToggleExpand={() => handleToggleExpand(step.id)}
-                        />
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={localSteps.map((step) => step.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            <div className="space-y-3">
+              {localSteps.map((step, index) => (
+                <SortableStep
+                  key={step.id}
+                  id={step.id}
+                  recipeId={recipeId}
+                  step={step}
+                  index={index}
+                  isActive={activeStepId === step.id}
+                  onToggleExpand={() => handleToggleExpand(step.id)}
+                />
+              ))}
+            </div>
+          </SortableContext>
+        </DndContext>
       </div>
 
       <motion.div
